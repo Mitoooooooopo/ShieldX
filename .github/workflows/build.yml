@@ -1,0 +1,48 @@
+name: Build ShieldCompat
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Install NDK
+      run: |
+        sdkmanager "ndk;25.2.9519653"
+        sdkmanager "cmake;3.22.1"
+
+    - name: Setup JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Build compat .so
+      run: |
+        export ANDROID_NDK=$ANDROID_SDK_ROOT/ndk/25.2.9519653
+        mkdir -p build
+        cmake \
+          -B build \
+          -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
+          -DANDROID_ABI=armeabi-v7a \
+          -DANDROID_PLATFORM=android-21 \
+          -DCMAKE_C_FLAGS="-march=armv7-a -mthumb -mfloat-abi=softfp" \
+          -DCMAKE_CXX_FLAGS="-march=armv7-a -mthumb -mfloat-abi=softfp"
+        cmake --build build --target tsec_wrapper
+
+    - name: Upload compat .so
+      uses: actions/upload-artifact@v4
+      with:
+        name: libtsec_wrapper
+        path: build//libtsec_wrapper.so 
+        
