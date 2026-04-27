@@ -19,7 +19,10 @@ OpenGL ES 3.2 support is mandatory
 
 You need to have controller to play games (it's temporary touch screen support is in list i be implementing it in future)
 
+# Titles running 
+<img width="1520" height="720" alt="Screenshot_2026-04-27-11-25-12-50" src="https://github.com/user-attachments/assets/6c6b33bc-5b09-4f70-8fc9-62a10bbde2e0" />
 
+<img width="1519" height="672" alt="IMG_20260427_210235" src="https://github.com/user-attachments/assets/200ac13c-cacd-48c5-9ec9-e669cdbf2242" />
 
 # About building
 
